@@ -9,18 +9,15 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import pages.LoginPage;
-import pages.RegisterPage;
 import pages.modals.CommonModal;
 
 import java.time.Duration;
-import java.util.UUID;
 
-public class TC01_RegisterUser {
+public class TC02_Login {
 
     @Test
-    public void verify_register_successfully() {
-
-        //Pre-condition: 
+    public void Verify_Valid_Login() {
+        //Pre-condition:
 
         //        //Start chrome browser
         ChromeOptions options = new ChromeOptions();
@@ -33,60 +30,39 @@ public class TC01_RegisterUser {
 
         WebDriverWait wait = new WebDriverWait(chromeDriver, Duration.ofSeconds(30));
 
-        //Khoi tao pages
-        RegisterPage registerPage = new RegisterPage(chromeDriver);
-        LoginPage loginPage = new LoginPage(chromeDriver);
-        CommonModal commonModal = new CommonModal(chromeDriver);
-
         // Mo full man hinh
         chromeDriver.manage().window().maximize();
         // Mo trang https://demo1.cybersoft.edu.vn/
         chromeDriver.get("https://demo1.cybersoft.edu.vn/sign-up");
 
-        //Step 1: Enter account
-        //By va WebElement --> tuong ung locator tren trang web html
-        //Tim element Tai khoan textbox
-        String account = UUID.randomUUID().toString();
-        System.out.println(account);
+        //Khoi tao cho pages
+        LoginPage loginPage = new LoginPage(chromeDriver);
+        CommonModal commonModal = new CommonModal(chromeDriver);
 
-        registerPage.enterAccount(account);
-
-        //Step 2: Enter password
-        registerPage.enterPassword("123456");
-
-        //Step 3: Re-enter password
-        registerPage.confirmPassword("123456");
-
-        //Step 4: Enter full name
-        registerPage.enterFullName("John John");
-
-        //Step 5: Enter email
-        String email = account + "@example.com";
-        registerPage.enterEmail(email);
-
-        //Step 6: Click register
-        registerPage.clickRegister();
-
-        //Step 7: Verify user registers successfully
-        //VP1 (Verify Point): Message 'Đăng ký thành công' displays
-        String recordedText = commonModal.getMessageText();
-        Assert.assertEquals(recordedText, "Đăng ký thành công", "Register message is incorrect !");
-        commonModal.waitModalDisappear();
-
-        //VP2: User login successfully with new account
-        //Navigate to Login page
+        //Pre-condition: Click 'Đăng Nhập' link
         By byLnkLogin = By.xpath("//a[h3[text()='Đăng Nhập']]");
         WebElement lnkLogin = wait.until(ExpectedConditions.visibilityOfElementLocated(byLnkLogin));
         lnkLogin.click();
 
-        //Login
-        loginPage.login(account, "123456");
+        //Step 1: Enter account login
+        String account = "8458c3ea-aee8-43e5-bdd8-626af797f013";
+        loginPage.enterAccount(account);
 
+        //Step 2: Enter password login
+        loginPage.enterPassword("123456");
+
+        //Step 3: Click button login
+        loginPage.clickLogin();
+
+        //Step 4: Verify login successfully
+        //VP: "Đăng nhập thành công" dialog message displays
         String recordedTextLogin = commonModal.getMessageText();
         Assert.assertEquals(recordedTextLogin, "Đăng nhập thành công", "Login message is incorrect !");
         commonModal.waitModalDisappear();
 
-        //Post-condition: Delete user created above --> call bang API
+        //VP2: User profile dislays on the top right
+        //VP3: Logout link displays
+
         //Quit driver: close browser & kill process chromedriver
         chromeDriver.quit();
     }
