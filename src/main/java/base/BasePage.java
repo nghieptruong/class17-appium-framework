@@ -1,9 +1,11 @@
 package base;
 
 import constants.TimeoutConstant;
+import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -15,6 +17,7 @@ public class BasePage {
 
     public BasePage(WebDriver driver) {
         this.driver = driver;
+        PageFactory.initElements(new AppiumFieldDecorator(driver, Duration.ofSeconds(TimeoutConstant.LONG_TIMEOUT)), this);
     }
 
     public WebDriverWait getWebDriverWait() {
@@ -37,6 +40,11 @@ public class BasePage {
     public WebElement waitElementToBeClickable(By locator, long timeOutInSec) {
         WebDriverWait wait = getWebDriverWait(timeOutInSec);
         return wait.until(ExpectedConditions.elementToBeClickable(locator));
+    }
+
+    public WebElement waitElementToBeClickable(WebElement element, long timeOutInSec) {
+        WebDriverWait wait = getWebDriverWait(timeOutInSec);
+        return wait.until(ExpectedConditions.elementToBeClickable(element));
     }
 
     public WebElement waitElementToBeClickable(By locator) {
@@ -69,8 +77,17 @@ public class BasePage {
         element.click();
     }
 
+    public void click(WebElement element, long timeOut) {
+        WebElement elementHandle = waitElementToBeClickable(element, timeOut);
+        elementHandle.click();
+    }
+
     public void click(By locator) {
         click(locator, TimeoutConstant.DEFAULT_TIMEOUT);
+    }
+
+    public void click(WebElement element) {
+        click(element, TimeoutConstant.DEFAULT_TIMEOUT);
     }
 
     public String getText(By locator, long timeOut) {
@@ -82,4 +99,17 @@ public class BasePage {
         return getText(locator, TimeoutConstant.DEFAULT_TIMEOUT);
     }
 
+    public WebElement waitVisibilityOfElement(WebElement element, long timeout) {
+        WebDriverWait wait = getWebDriverWait(timeout);
+        return wait.until(ExpectedConditions.visibilityOf(element));
+    }
+
+    public boolean isDisplayed(WebElement element, long timeout) {
+        try {
+            WebElement elementHandle = waitVisibilityOfElement(element, timeout);
+            return elementHandle.isDisplayed();
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }

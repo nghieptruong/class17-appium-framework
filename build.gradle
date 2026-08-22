@@ -10,7 +10,8 @@ repositories {
 }
 
 dependencies {
-    implementation("org.seleniumhq.selenium:selenium-java:4.45.0")
+    implementation("org.seleniumhq.selenium:selenium-java:4.34.0")
+    implementation("io.appium:java-client:9.5.0")
     // Source: https://mvnrepository.com/artifact/org.testng/testng
     implementation("org.testng:testng:7.12.0")
     implementation("org.apache.logging.log4j:log4j-core:2.26.1")

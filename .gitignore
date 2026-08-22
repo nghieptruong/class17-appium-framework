@@ -46,3 +46,4 @@ testoutput/
 .idea/vcs.xml
 extentreport-output/
 test-output/
+logs/

@@ -31,7 +31,7 @@ public class BaseTest {
     public void beforeMethod(Method method) {
         LOG.info("beforeMethod executing...");
         ExtentReportManager.createTest(method.getName());
-        DriverManager driverManager = DriverManagerFactory.getDriverManager("chrome");
+        DriverManager driverManager = DriverManagerFactory.getDriverManager("android");
         driverManager.createWebDriver();
         driver = driverManager.getDriver();
         LOG.info("beforeMethod ended...");
