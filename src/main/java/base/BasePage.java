@@ -71,6 +71,15 @@ public class BasePage {
         sendKeys(locator, value, TimeoutConstant.DEFAULT_TIMEOUT);
     }
 
+    public void sendKeys(WebElement element, String value, long timeOut) {
+        WebElement handleElement = waitVisibilityOfElement(element, timeOut);
+        handleElement.sendKeys(value);
+    }
+
+    public void sendKeys(WebElement element, String value) {
+        sendKeys(element, value, TimeoutConstant.DEFAULT_TIMEOUT);
+    }
+
     //=========================
     public void click(By locator, long timeOut) {
         WebElement element = waitElementToBeClickable(locator, timeOut);
@@ -97,6 +106,15 @@ public class BasePage {
 
     public String getText(By locator) {
         return getText(locator, TimeoutConstant.DEFAULT_TIMEOUT);
+    }
+
+    public String getText(WebElement element, long timeOut) {
+        WebElement handleElement = waitVisibilityOfElement(element, timeOut);
+        return handleElement.getText();
+    }
+
+    public String getText(WebElement element) {
+        return getText(element, TimeoutConstant.DEFAULT_TIMEOUT);
     }
 
     public WebElement waitVisibilityOfElement(WebElement element, long timeout) {
