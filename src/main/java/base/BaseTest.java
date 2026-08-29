@@ -11,6 +11,7 @@ import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
 import reports.ExtentReportManager;
+import utils.ConfigManager;
 
 import java.lang.reflect.Method;
 
@@ -23,6 +24,7 @@ public class BaseTest {
     @BeforeSuite
     public void beforeSuite() {
         LOG.info("beforeSuite executing...");
+        ConfigManager.loadProperties();
         ExtentReportManager.initializeExtentReports(); // khoi tao extentreport manager
         LOG.info("beforeSuite ended...");
     }
@@ -30,8 +32,9 @@ public class BaseTest {
     @BeforeMethod
     public void beforeMethod(Method method) {
         LOG.info("beforeMethod executing...");
+        String platform = ConfigManager.getProperty("platform");
         ExtentReportManager.createTest(method.getName());
-        DriverManager driverManager = DriverManagerFactory.getDriverManager("android");
+        DriverManager driverManager = DriverManagerFactory.getDriverManager(platform);
         driverManager.createWebDriver();
         driver = driverManager.getDriver();
         LOG.info("beforeMethod ended...");
